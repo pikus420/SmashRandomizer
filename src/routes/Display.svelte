@@ -6,7 +6,7 @@
     <div class="flex flex-col">
         <span class="text-[9px] font-black uppercase text-slate-400">Player</span>
         <span class="font-bold text-slate-800 truncate">{player}</span>
-        <img src="/src/lib/assets/{player}.png" alt="{player}'s avatar" class="rounded-full size-20">
+        <img src="/img/{player}.png" alt="{player}'s avatar" class="rounded-full size-20">
     </div>
     
     <div class="border-t border-slate-100 my-1"></div>
