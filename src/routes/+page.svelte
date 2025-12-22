@@ -1,37 +1,45 @@
 <script>
     import RandomButton from './RandomButton.svelte';
+    import SingleRandomButton from './SingleRandomButton.svelte';
     import Display from './Display.svelte';
     import { roster, blacklist0, blacklist1, blacklist2, blacklist3 } from '$lib/roster.js';
 
     let curr_characters = $state(["None", "None", "None", "None"]);
-    
-    const all_blacklists = [blacklist0, blacklist1, blacklist2, blacklist3];
-    const roster_length = roster.length;
+        
+        const players = [
+            { name: "_pikus", blacklist: blacklist0 },
+            { name: "Bomsii", blacklist: blacklist1 },
+            { name: "Messi",  blacklist: blacklist2 },
+            { name: "Kuriboh", blacklist: blacklist3 }
+        ];
 
-    function randomizeChracter() {
-        curr_characters = curr_characters.map((_, i) => {
+        const roster_length = roster.length;
+
+        function reroll(i) {
             let character;
-            let isBlacklisted = true;
+            do {
+                character = roster[Math.floor(Math.random() * roster_length)];
+            } while (players[i].blacklist.includes(character));
+            
+            curr_characters[i] = character;
+        }
 
-            while (isBlacklisted) {
-                const randomIndex = Math.floor(Math.random() * roster_length);
-                character = roster[randomIndex];
-
-                isBlacklisted = all_blacklists[i].includes(character);
+        function randomizeAll() {
+            for (let i = 0; i < players.length; i++) {
+                reroll(i);
             }
+        }
+    </script>
 
-            return character;
-        });
-    }
-</script>
+    <div class="flex flex-col items-center gap-8 p-10">
+        <RandomButton click={randomizeAll} />
 
-<div class="flex flex-col items-center gap-8 p-10">
-    <RandomButton klik={randomizeChracter} />
-
-    <div class="flex flex-row flex-wrap justify-center gap-4 w-full">
-        <Display character={curr_characters[0]} player="_pikus"/>
-        <Display character={curr_characters[1]} player="Bomsii"/>
-        <Display character={curr_characters[2]} player="Messi"/>
-        <Display character={curr_characters[3]} player="Kuriboh"/>
+        <div class="flex flex-row flex-wrap justify-center gap-4 w-full">
+            {#each players as p, i}
+                <div class="flex flex-col items-center gap-2">
+                    <Display character={curr_characters[i]} player={p.name}/>
+                    <SingleRandomButton click={() => reroll(i)}/>
+                </div>
+            {/each}
+        </div>
     </div>
-</div>
