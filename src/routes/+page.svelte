@@ -2,6 +2,7 @@
     import RandomButton from './RandomButton.svelte';
     import SingleRandomButton from './SingleRandomButton.svelte';
     import Display from './Display.svelte';
+    import Portrait from './Portrait.svelte';
     import { roster, blacklist0, blacklist1, blacklist2, blacklist3 } from '$lib/roster.js';
 
     let curr_characters = $state(["None", "None", "None", "None"]);
@@ -39,6 +40,9 @@
                 <div class="flex flex-col items-center gap-2">
                     <Display character={curr_characters[i]} player={p.name}/>
                     <SingleRandomButton click={() => reroll(i)}/>
+                    {#if curr_characters[i] != "None"}
+                    <Portrait character={curr_characters[i]}/>
+                    {/if}
                 </div>
             {/each}
         </div>
